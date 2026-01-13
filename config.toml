@@ -1,2 +1,4 @@
 wallpaper_dir = "/home/ente/Pictures/wallpapers"
 rotation_interval = "10s"
+
+[weights]
