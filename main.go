@@ -95,7 +95,7 @@ func chooseWallpaper(config *config.Config) (string, error) {
 }
 
 func setWallpaper(wallpaperPath string) error {
-	cmd := exec.Command("swaybg", "-i", wallpaperPath, "-m", "fill")
+	cmd := exec.Command("swaybg", "-i", wallpaperPath, "-m", "fill", "-o", "*")
 	return cmd.Run()
 }
 
