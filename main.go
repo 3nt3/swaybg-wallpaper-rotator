@@ -49,7 +49,8 @@ func main() {
 				log.Printf("Setting wallpaper to: %s", wp)
 
 				// set wallpaper using swaybg
-				exec.Command("pkill", "swaybg") // kill existing swaybg instances
+				cmd := exec.Command("pkill", "-x", "swaybg") // kill existing swaybg instances
+				cmd.Run()
 				go setWallpaper(config.WallpaperDir + "/" + wp)
 
 				log.Printf("Waiting for %s before next rotation", config.RotationInterval.String())
