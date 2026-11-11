@@ -87,6 +87,13 @@ while IFS=$'\t' read -r sum id name; do
   dest="$DIR/$name"
   [[ -e $dest ]] && dest="$DIR/${name%.*}-${id:0:8}.${name##*.}"
   api GET "/assets/$id/original" -o "$TMP/dl"
+  got=$(b64sha1 "$TMP/dl")
+  if grep -qF "$got"$'\t' "$TMP/local"; then
+    # served bytes differ from the reported checksum but we already have them
+    echo "warn: asset $id ($name) reports checksum $sum but serves $got (already local), skipping" >&2
+    continue
+  fi
+  printf '%s\t%s\n' "$got" "$dest" >> "$TMP/local"
   mv "$TMP/dl" "$dest"   # atomic: the rotator never sees a partial file
   down=$((down + 1)); echo "down: $(basename "$dest")"
 done < "$TMP/remote"
