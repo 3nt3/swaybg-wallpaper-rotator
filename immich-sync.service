@@ -1,0 +1,8 @@
+[Unit]
+Description=Sync wallpapers with Immich album (add-only, up then down)
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/immich-wallpapers.env
+ExecStart=%h/src/3nt3/swaybg-wallpaper-rotator/immich-sync.sh
