@@ -13,6 +13,10 @@
 set -euo pipefail
 
 : "${IMMICH_URL:?IMMICH_URL not set}" "${IMMICH_API_KEY:?IMMICH_API_KEY not set}"
+# Only one sync at a time (timer + manual run would download the same file twice).
+exec 9> "${XDG_RUNTIME_DIR:-/tmp}/immich-wp-sync.lock"
+flock -n 9 || { echo "another sync is running, skipping"; exit 0; }
+
 ALBUM="${IMMICH_ALBUM:-Wallpapers}"
 DIR="${WALLPAPER_DIR:-$HOME/Pictures/wallpapers}"
 
